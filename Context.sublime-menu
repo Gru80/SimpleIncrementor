@@ -1,0 +1,36 @@
+[
+{
+	"id" : "simplementor",
+	"caption": "Simple Incrementor",
+	"children":
+	[
+	{
+		"caption" : "Increment Selection",
+		"command" : "simple_increment"
+	},
+	{
+		"caption" : "Increment Selection with leading zeros",
+		"command" : "simple_increment_digits"
+	},
+	{
+		"caption" : "Increment Selection with offset",
+		"command" : "simple_increment_offset"
+	}
+	]
+},
+{
+	"id" : "medtest",
+	"caption": "Martins Test",
+	"children":
+	[
+	{
+		"caption" : "Insert Hello World",
+		"command" : "example"
+	},
+	{
+		"caption" : "Gru Incrementor",
+		"command" : "gincrement"
+	}
+	]
+}
+]

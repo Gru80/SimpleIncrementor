@@ -1,0 +1,5 @@
+[
+    { "caption": "Simple Incrementor: All occurances of selected text", "command": "simple_increment" },
+    { "caption": "Simple Incrementor: All occurances of selected text with leading zeros", "command": "simple_increment_digits" },
+    { "caption": "Simple Incrementor: All occurances of selected text - start with offset", "command": "simple_increment_offset" },
+]
