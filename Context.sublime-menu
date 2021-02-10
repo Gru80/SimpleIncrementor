@@ -1,6 +1,6 @@
 [
 {
-	"id" : "simplementor",
+	"id" : "sincrementor",
 	"caption": "Simple Incrementor",
 	"children":
 	[
@@ -15,21 +15,14 @@
 	{
 		"caption" : "Increment Selection with offset",
 		"command" : "simple_increment_offset"
-	}
-	]
-},
-{
-	"id" : "medtest",
-	"caption": "Martins Test",
-	"children":
-	[
-	{
-		"caption" : "Insert Hello World",
-		"command" : "example"
 	},
 	{
-		"caption" : "Gru Incrementor",
-		"command" : "gincrement"
+		"caption" : "Increment Selection with leading zeros and preceding text",
+		"command" : "simple_increment_prectext_digits"
+	},
+	{
+		"caption" : "Increment Selection with leading preceding text",
+		"command" : "simple_increment_prectext"
 	}
 	]
 }
