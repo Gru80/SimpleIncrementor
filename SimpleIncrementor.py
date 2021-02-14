@@ -12,20 +12,62 @@ Some options are provided:
  * Define a preceding text in front of the iterator
 '''
 
-import sublime
-import sublime_plugin
+import sublime, sublime_plugin
+import re
+
+SETTINGS_FILE = "SimpleIncrementor.sublime-settings"
+EXPHELP = '''To re-show this dialogue, enable show_help in the Plugin Settings.
+
+Use key:value pairs separated by a blank character to pass options.
+
+Valid Keys:
+digits:X (fill with leading zeros)
+offset:X
+prectext:Xxx (preceding text)
+step:X ()
+'''
+
+def settings():
+    return sublime.load_settings(SETTINGS_FILE)
+
+class SimpleIncrementExpertParseCommand(sublime_plugin.TextCommand):
+    def run(self, edit, cmd):
+        cmds = dict(re.findall(r'(\S+):(\S+)', cmd))
+        sublime.active_window().run_command('simple_increment', cmds)
+        #print(cmds)
+
+class SimpleIncrementExpertCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        shelp = False
+        if settings().has("show_help"):
+            shelp = settings().get("show_help")
+        
+        if shelp:
+            sublime.message_dialog(EXPHELP)
+
+        settings().set("show_help", False)
+        sublime.save_settings(SETTINGS_FILE)
+
+        self.view.window().show_input_panel(
+            'Simple Incrementor - Expert Mode:',
+            '',
+            lambda x: sublime.active_window().run_command('simple_increment_expert_parse', {
+                'cmd': x
+                }),
+            None,
+            None)
 
 
 class SimpleIncrementCommand(sublime_plugin.TextCommand):
     ''' The main component for doing the replacement '''
 
-    def run(self, edit, offset=0, digits=0, prectext=''):
+    def run(self, edit, offset=0, digits=0, prectext='', step=1):
         sublime.active_window().run_command('find_all_under')
-        i = offset
+        i = int(offset)
         cntr = 0
         for occurance in self.view.sel():
-            self.view.replace(edit, occurance, prectext + str(i).zfill(digits))
-            i+=1
+            self.view.replace(edit, occurance, prectext + str(i).zfill(int(digits)))
+            i+=int(step)
             cntr+=1
         self.view.window().status_message ('Replaced {} occurances'.format(cntr))
 
@@ -46,7 +88,6 @@ class SimpleIncrementDigitsCommand(sublime_plugin.TextCommand):
 
 
 class SimpleIncrementPrectextCommand(sublime_plugin.TextCommand):
-
     def run(self, edit):
         self.view.window().show_input_panel(
             'Simple Incrementor: Preceding Text?',

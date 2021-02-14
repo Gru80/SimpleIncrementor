@@ -23,6 +23,10 @@
 	{
 		"caption" : "Increment Selection with leading preceding text",
 		"command" : "simple_increment_prectext"
+	},
+	{
+		"caption" : "Expert Mode",
+		"command" : "simple_increment_expert"
 	}
 	]
 }
