@@ -9,19 +9,19 @@
 		"command" : "simple_increment"
 	},
 	{
-		"caption" : "Increment Selection with leading zeros",
+		"caption" : "... with leading zeros",
 		"command" : "simple_increment_digits"
 	},
 	{
-		"caption" : "Increment Selection with offset",
+		"caption" : "... with offset",
 		"command" : "simple_increment_offset"
 	},
 	{
-		"caption" : "Increment Selection with leading zeros and preceding text",
+		"caption" : "... with leading zeros and preceding text",
 		"command" : "simple_increment_prectext_digits"
 	},
 	{
-		"caption" : "Increment Selection with leading preceding text",
+		"caption" : "... with leading preceding text",
 		"command" : "simple_increment_prectext"
 	},
 	{

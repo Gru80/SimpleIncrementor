@@ -16,27 +16,35 @@ import sublime, sublime_plugin
 import re
 
 SETTINGS_FILE = "SimpleIncrementor.sublime-settings"
-EXPHELP = '''To re-show this dialogue, enable show_help in the Plugin Settings.
-
-Use key:value pairs separated by a blank character to pass options.
+EXPHELP = '''Use key:value pairs separated by a blank character to pass options.
 
 Valid Keys:
-digits:X (fill with leading zeros)
-offset:X
-prectext:Xxx (preceding text)
-step:X ()
+digits, offset, prectext, step
+
+Example:
+digits:5 offset:10
+
+To re-show this dialogue, enable show_help in the Plugin Settings.
 '''
 
 def settings():
     return sublime.load_settings(SETTINGS_FILE)
 
+
 class SimpleIncrementExpertParseCommand(sublime_plugin.TextCommand):
+    ''' Take the arguments from expert mode and create a dictionary from it to
+        call the main function
+    '''
+
     def run(self, edit, cmd):
         cmds = dict(re.findall(r'(\S+):(\S+)', cmd))
         sublime.active_window().run_command('simple_increment', cmds)
         #print(cmds)
 
+
 class SimpleIncrementExpertCommand(sublime_plugin.TextCommand):
+    ''' Get the user input for expert-mode execution '''
+
     def run(self, edit):
         shelp = False
         if settings().has("show_help"):
@@ -61,18 +69,27 @@ class SimpleIncrementExpertCommand(sublime_plugin.TextCommand):
 class SimpleIncrementCommand(sublime_plugin.TextCommand):
     ''' The main component for doing the replacement '''
 
-    def run(self, edit, offset=0, digits=0, prectext='', step=1):
+    def run(self, edit, **kwargs):
+        offset = int(kwargs.get('offset', 0))
+        digits = int(kwargs.get('digits', 0))
+        step = int(kwargs.get('step', 1))
+        prectext = kwargs.get('prectext', '')
+        
+        # Select all occurances of the selected text
         sublime.active_window().run_command('find_all_under')
-        i = int(offset)
+
+        i = offset
         cntr = 0
         for occurance in self.view.sel():
-            self.view.replace(edit, occurance, prectext + str(i).zfill(int(digits)))
-            i+=int(step)
-            cntr+=1
-        self.view.window().status_message ('Replaced {} occurances'.format(cntr))
+            self.view.replace(edit, occurance, prectext + str(i).zfill(digits))
+            i += step
+            cntr += 1
+        self.view.window().status_message('Replaced {} occurances'.format(cntr))
 
 
 class SimpleIncrementDigitsCommand(sublime_plugin.TextCommand):
+    ''' Fill up the left part with leading zeros to match the given number of digits '''
+
     prectext = ''
     def run(self, edit, prectext = ''):
         self.prectext = prectext 
@@ -80,7 +97,7 @@ class SimpleIncrementDigitsCommand(sublime_plugin.TextCommand):
             'Simple Incrementor: How many total digits?',
             '',
             lambda x: sublime.active_window().run_command('simple_increment', {
-                'digits': int(x),
+                'digits': x,
                 'prectext': self.prectext
                 }),
             None,
@@ -88,6 +105,8 @@ class SimpleIncrementDigitsCommand(sublime_plugin.TextCommand):
 
 
 class SimpleIncrementPrectextCommand(sublime_plugin.TextCommand):
+    ''' Get the preceding text from the user '''
+
     def run(self, edit):
         self.view.window().show_input_panel(
             'Simple Incrementor: Preceding Text?',
@@ -100,6 +119,8 @@ class SimpleIncrementPrectextCommand(sublime_plugin.TextCommand):
 
 
 class SimpleIncrementPrectextDigitsCommand(sublime_plugin.TextCommand):
+    ''' Combination of preceding text and fill-up with leading zeros '''
+
     def run(self, edit):
         self.view.window().show_input_panel(
             'Simple Incrementor: Preceding Text?',
@@ -112,12 +133,14 @@ class SimpleIncrementPrectextDigitsCommand(sublime_plugin.TextCommand):
 
 
 class SimpleIncrementOffsetCommand(sublime_plugin.TextCommand):
+    ''' Start incrementation with an offset '''
+
     def run(self, edit):
         self.view.window().show_input_panel(
             'Simple Incrementor: Offset?',
             '',
             lambda x: sublime.active_window().run_command('simple_increment', {
-                'offset': int(x)
+                'offset': x
                 }),
             None,
             None)

@@ -12,11 +12,11 @@
     	"command": "simple_increment_offset" 
     },
     {
-		"caption" : "Simple Incrementor: Increment Selection with leading zeros and preceding text",
+		"caption" : "Simple Incrementor: Increment selection with leading zeros and preceding text",
 		"command" : "simple_increment_prectext_digits"
 	},
 	{
-		"caption" : "Simple Incrementor: Increment Selection with leading preceding text",
+		"caption" : "Simple Incrementor: Increment selection with leading preceding text",
 		"command" : "simple_increment_prectext"
 	},
     {
