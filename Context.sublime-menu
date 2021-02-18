@@ -25,6 +25,8 @@
 		"command" : "simple_increment_prectext"
 	},
 	{
+		"caption" : "-"	},
+	{
 		"caption" : "Expert Mode",
 		"command" : "simple_increment_expert"
 	}
